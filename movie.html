@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Movie Server</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+display:flex;
+height:100vh;
+margin:0;
+}
+
+#list{
+width:350px;
+overflow:auto;
+background:#1a1a1a;
+}
+
+.movie{
+padding:10px;
+border-bottom:1px solid #333;
+cursor:pointer;
+}
+
+#player{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+video{
+width:90%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="list"></div>
+
+<div id="player">
+<video id="video" controls></video>
+</div>
+
+<script>
+
+fetch("api.php")
+.then(res=>res.json())
+.then(data=>{
+
+let list=document.getElementById("list");
+
+data.forEach(m=>{
+
+let div=document.createElement("div");
+
+div.className="movie";
+div.innerText=m.name;
+
+div.onclick=()=>{
+document.getElementById("video").src=m.url;
+};
+
+list.appendChild(div);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

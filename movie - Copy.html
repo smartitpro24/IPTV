@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>IPTV Player</title>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+
+body{
+margin:0;
+background:#111;
+color:white;
+font-family:Arial;
+display:flex;
+height:100vh;
+overflow:hidden;
+}
+
+#channels{
+width:350px;
+background:#1a1a1a;
+overflow-y:auto;
+}
+
+.channel{
+padding:12px;
+border-bottom:1px solid #333;
+cursor:pointer;
+}
+
+.focus{
+background:#444;
+outline:2px solid yellow;
+}
+
+#player{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+background:black;
+}
+
+video{
+width:95%;
+height:95%;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<iframe 
+src="https://movies.discoveryftp.net/"
+width="100%" 
+height="100%"
+frameborder="0">
+</iframe>
+
+<script>
+
+// আপনার ডাটা লিংক এখানে বসান
+const API_URL = "https://example.com/channels.json";
+
+const list = document.getElementById("channels");
+const video = document.getElementById("video");
+
+let channels = [];
+let index = 0;
+
+// ডাটা লোড
+fetch(API_URL)
+.then(res => res.json())
+.then(data => {
+
+channels = data;
+
+channels.forEach((c,i)=>{
+
+let div=document.createElement("div");
+div.className="channel";
+div.innerText=c.name;
+
+if(i===0) div.classList.add("focus");
+
+div.onclick=()=>playChannel(i);
+
+list.appendChild(div);
+
+});
+
+playChannel(0);
+
+});
+
+function playChannel(i){
+
+index=i;
+
+document.querySelectorAll(".channel").forEach(e=>e.classList.remove("focus"));
+
+document.querySelectorAll(".channel")[i].classList.add("focus");
+
+let url=channels[i].url;
+
+if(Hls.isSupported()){
+
+let hls=new Hls();
+
+hls.loadSource(url);
+hls.attachMedia(video);
+
+}else{
+
+video.src=url;
+
+}
+
+}
+
+// Remote / Keyboard navigation
+document.addEventListener("keydown",function(e){
+
+if(e.key==="ArrowDown"){
+
+if(index<channels.length-1) index++;
+
+playChannel(index);
+
+}
+
+if(e.key==="ArrowUp"){
+
+if(index>0) index--;
+
+playChannel(index);
+
+}
+
+if(e.key==="Enter"){
+
+playChannel(index);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

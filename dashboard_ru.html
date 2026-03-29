@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Панель Отеля</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+color:white;
+background:url("hotel_bg.jpg") center/cover no-repeat;
+}
+
+.overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+}
+
+.header{
+position:absolute;
+top:30px;
+left:60px;
+font-size:40px;
+}
+
+.menu{
+position:absolute;
+bottom:60px;
+width:100%;
+display:flex;
+justify-content:center;
+gap:40px;
+}
+
+.box{
+width:180px;
+height:130px;
+background:rgba(0,0,0,0.6);
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+font-size:20px;
+}
+
+.box.active{
+background:white;
+color:black;
+}
+
+</style>
+</head>
+
+<body>
+<video autoplay muted loop> <source src="hotel.mp4" type="video/mp4"> </video>
+<div class="overlay"></div>
+
+<div class="header">
+ДОБРО ПОЖАЛОВАТЬ
+</div>
+
+<div class="menu">
+
+<div class="box active">📺 ТВ</div>
+<div class="box">🎬 ФИЛЬМЫ</div>
+<div class="box">🎵 МУЗЫКА</div>
+<div class="box">🏨 ОТЕЛЬ</div>
+<div class="box">🍽 МЕНЮ</div>
+
+</div>
+<script>
+
+function clock(){
+let n=new Date();
+time.innerHTML=n.toLocaleTimeString();
+date.innerHTML=n.toDateString();
+}
+
+setInterval(clock,1000);
+
+let items=document.querySelectorAll(".box");
+let index=0;
+
+document.addEventListener("keydown",e=>{
+
+if(e.key=="ArrowRight") index=(index+1)%items.length;
+
+if(e.key=="ArrowLeft") index=(index-1+items.length)%items.length;
+
+if(e.key=="Enter") alert(items[index].innerText);
+
+items.forEach(i=>i.classList.remove("active"));
+items[index].classList.add("active");
+
+});
+
+</script>
+
+</body>
+</html>
